@@ -9,11 +9,11 @@ import { StatsCard } from '../components/dashboard/StatsCard';
 import { DocumentChart } from '../components/dashboard/DocumentChart';
 import { useApi } from '../hooks/useApi';
 import { Analytics } from '../types/partner';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 
 export const Dashboard: React.FC = () => {
-  const { t } = useLingo();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { data: analytics, loading } = useApi<Analytics>('/api/analytics');
 

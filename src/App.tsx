@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { LingoProvider } from '@lingo-dev/react';
 import { AuthProvider, useAuth } from './hooks/useAuth';
 import { Layout } from './components/layout/Layout';
 import { Login } from './pages/Login';
@@ -9,10 +8,7 @@ import { Partners } from './pages/Partners';
 import { Documents } from './pages/Documents';
 import { Analytics } from './pages/Analytics';
 import { Settings } from './pages/Settings';
-
-// Importation des locales
-import frLocale from '../locales/fr.json';
-import enLocale from '../locales/en.json';
+import './i18n';
 
 // Initialisation de MSW
 async function initMsw() {
@@ -108,19 +104,11 @@ const AppRoutes: React.FC = () => {
 
 function App() {
   return (
-    <LingoProvider
-      locale="fr"
-      translations={{
-        fr: frLocale,
-        en: enLocale,
-      }}
-    >
-      <AuthProvider>
-        <Router>
-          <AppRoutes />
-        </Router>
-      </AuthProvider>
-    </LingoProvider>
+    <AuthProvider>
+      <Router>
+        <AppRoutes />
+      </Router>
+    </AuthProvider>
   );
 }
 

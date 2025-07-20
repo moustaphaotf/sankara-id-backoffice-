@@ -4,7 +4,7 @@ import { useAuth } from '../hooks/useAuth';
 import { Button } from '../components/ui/Button';
 import { Input } from '../components/ui/Input';
 import { Card } from '../components/ui/Card';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState('admin@company.com');
@@ -13,7 +13,7 @@ export const Login: React.FC = () => {
   const [error, setError] = useState('');
 
   const { login } = useAuth();
-  const { t } = useLingo();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {

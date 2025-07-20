@@ -1,8 +1,8 @@
 import React from 'react';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 export const Settings: React.FC = () => {
-  const { t } = useLingo();
+  const { t } = useTranslation();
 
   return (
     <div className="space-y-6">

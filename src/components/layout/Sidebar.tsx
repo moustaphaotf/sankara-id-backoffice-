@@ -8,7 +8,7 @@ import {
   CogIcon,
   LogoutIcon,
 } from '@heroicons/react/24/outline';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../hooks/useAuth';
 import { clsx } from 'clsx';
 
@@ -22,7 +22,7 @@ const navigation = [
 
 export const Sidebar: React.FC = () => {
   const location = useLocation();
-  const { t } = useLingo();
+  const { t } = useTranslation();
   const { logout } = useAuth();
 
   return (

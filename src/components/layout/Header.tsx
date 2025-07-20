@@ -1,14 +1,15 @@
 import React from 'react';
 import { BellIcon, GlobeIcon } from '@heroicons/react/24/outline';
 import { useAuth } from '../../hooks/useAuth';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 export const Header: React.FC = () => {
   const { user } = useAuth();
-  const { locale, setLocale } = useLingo();
+  const { i18n } = useTranslation();
 
   const toggleLanguage = () => {
-    setLocale(locale === 'fr' ? 'en' : 'fr');
+    const newLang = i18n.language === 'fr' ? 'en' : 'fr';
+    i18n.changeLanguage(newLang);
   };
 
   return (
@@ -24,11 +25,11 @@ export const Header: React.FC = () => {
           <button
             onClick={toggleLanguage}
             className="p-2 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-            title={`Changer vers ${locale === 'fr' ? 'English' : 'Français'}`}
+            title={`Changer vers ${i18n.language === 'fr' ? 'English' : 'Français'}`}
           >
             <GlobeIcon className="h-5 w-5" />
             <span className="ml-1 text-sm font-medium">
-              {locale.toUpperCase()}
+              {i18n.language.toUpperCase()}
             </span>
           </button>
 

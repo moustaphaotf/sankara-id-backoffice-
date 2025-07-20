@@ -5,7 +5,7 @@ import { EyeIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Document } from '../../types/partner';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 interface DocumentsTableProps {
   documents: Document[];
@@ -20,7 +20,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
   onApprove,
   onReject,
 }) => {
-  const { t, locale } = useLingo();
+  const { t, i18n } = useTranslation();
 
   const getStatusBadge = (status: Document['status']) => {
     const variants = {
@@ -47,7 +47,7 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
 
   const formatDate = (dateStr: string) => {
     return format(new Date(dateStr), 'dd/MM/yyyy HH:mm', {
-      locale: locale === 'fr' ? fr : enUS,
+      locale: i18n.language === 'fr' ? fr : enUS,
     });
   };
 

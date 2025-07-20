@@ -6,10 +6,10 @@ import { Card } from '../components/ui/Card';
 import { useApi, useApiMutation } from '../hooks/useApi';
 import { Document } from '../types/partner';
 import { PaginatedResponse } from '../types/api';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 export const Documents: React.FC = () => {
-  const { t } = useLingo();
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');

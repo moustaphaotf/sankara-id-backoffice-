@@ -10,7 +10,7 @@ import {
   Legend,
 } from 'recharts';
 import { Card, CardHeader, CardTitle } from '../ui/Card';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 interface DocumentChartProps {
   data: Array<{
@@ -22,7 +22,7 @@ interface DocumentChartProps {
 }
 
 export const DocumentChart: React.FC<DocumentChartProps> = ({ data }) => {
-  const { t } = useLingo();
+  const { t } = useTranslation();
 
   const formatDate = (dateStr: string) => {
     const date = new Date(dateStr);

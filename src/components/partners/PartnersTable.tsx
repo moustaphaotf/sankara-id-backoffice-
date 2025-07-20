@@ -5,7 +5,7 @@ import { EyeIcon, PencilIcon, StopIcon } from '@heroicons/react/24/outline';
 import { Partner } from '../../types/partner';
 import { Badge } from '../ui/Badge';
 import { Button } from '../ui/Button';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 interface PartnersTableProps {
   partners: Partner[];
@@ -20,7 +20,7 @@ export const PartnersTable: React.FC<PartnersTableProps> = ({
   onEdit,
   onSuspend,
 }) => {
-  const { t, locale } = useLingo();
+  const { t, i18n } = useTranslation();
 
   const getStatusBadge = (status: Partner['status']) => {
     const variants = {
@@ -53,7 +53,7 @@ export const PartnersTable: React.FC<PartnersTableProps> = ({
 
   const formatDate = (dateStr: string) => {
     return format(new Date(dateStr), 'dd/MM/yyyy HH:mm', {
-      locale: locale === 'fr' ? fr : enUS,
+      locale: i18n.language === 'fr' ? fr : enUS,
     });
   };
 

@@ -8,10 +8,10 @@ import { Card } from '../components/ui/Card';
 import { useApi } from '../hooks/useApi';
 import { Partner } from '../types/partner';
 import { PaginatedResponse } from '../types/api';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 export const Partners: React.FC = () => {
-  const { t } = useLingo();
+  const { t } = useTranslation();
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
   const [tierFilter, setTierFilter] = useState('');

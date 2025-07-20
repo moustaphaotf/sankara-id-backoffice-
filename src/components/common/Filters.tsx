@@ -3,7 +3,7 @@ import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
 import { Input } from '../ui/Input';
 import { Select } from '../ui/Select';
 import { Button } from '../ui/Button';
-import { useLingo } from '@lingo-dev/react';
+import { useTranslation } from 'react-i18next';
 
 interface FiltersProps {
   searchValue: string;
@@ -23,7 +23,7 @@ export const Filters: React.FC<FiltersProps> = ({
   filters,
   onReset,
 }) => {
-  const { t } = useLingo();
+  const { t } = useTranslation();
 
   return (
     <div className="bg-white p-4 rounded-lg border border-gray-200 mb-6">
