@@ -7,20 +7,29 @@ import {
 } from '@heroicons/react/24/outline';
 import { StatsCard } from '../components/dashboard/StatsCard';
 import { DocumentChart } from '../components/dashboard/DocumentChart';
-import { useApi } from '../hooks/useApi';
-import { Analytics } from '../types/partner';
+import { useAnalytics } from '../hooks/useAnalytics';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 
 export const Dashboard: React.FC = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { data: analytics, loading } = useApi<Analytics>('/api/analytics');
+  const { data: analytics, isLoading, error } = useAnalytics();
 
-  if (loading || !analytics) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-gray-500">{t('common.loading')}</div>
+      </div>
+    );
+  }
+
+  if (error || !analytics) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-red-500">
+          {error?.message || 'Erreur lors du chargement des données'}
+        </div>
       </div>
     );
   }

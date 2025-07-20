@@ -3,8 +3,16 @@ import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { EyeIcon, CheckIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { Document } from '../../types/partner';
-import { Badge } from '../ui/Badge';
-import { Button } from '../ui/Button';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../ui/table';
 import { useTranslation } from 'react-i18next';
 
 interface DocumentsTableProps {
@@ -71,40 +79,39 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
               {t('documents.fileName')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('documents.partner')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('documents.type')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('documents.status')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('documents.confidence')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('documents.uploadedAt')}
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead className="text-right">
               {t('documents.actions')}
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {documents.map((document) => (
-            <tr
+            <TableRow
               key={document.id}
-              className="hover:bg-gray-50 transition-colors duration-150"
             >
-              <td className="px-6 py-4 whitespace-nowrap">
+              <TableCell>
                 <div>
                   <div className="text-sm font-medium text-gray-900">
                     {document.fileName}
@@ -113,25 +120,25 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
                     {formatFileSize(document.fileSize)}
                   </div>
                 </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              </TableCell>
+              <TableCell className="text-sm text-gray-900">
                 {document.partnerName}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              </TableCell>
+              <TableCell>
                 {getTypeBadge(document.type)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              </TableCell>
+              <TableCell>
                 {getStatusBadge(document.status)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              </TableCell>
+              <TableCell>
                 <span className={`text-sm font-medium ${getConfidenceColor(document.confidence)}`}>
                   {(document.confidence * 100).toFixed(0)}%
                 </span>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              </TableCell>
+              <TableCell className="text-sm text-gray-500">
                 {formatDate(document.uploadedAt)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              </TableCell>
+              <TableCell className="text-right">
                 <div className="flex items-center justify-end space-x-2">
                   <Button
                     variant="outline"
@@ -143,14 +150,15 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
                   {document.status === 'pending' && (
                     <>
                       <Button
-                        variant="success"
+                        variant="default"
+                        className="bg-green-600 hover:bg-green-700 text-white"
                         size="sm"
                         onClick={() => onApprove(document)}
                       >
                         <CheckIcon className="h-4 w-4" />
                       </Button>
                       <Button
-                        variant="danger"
+                        variant="destructive"
                         size="sm"
                         onClick={() => onReject(document)}
                       >
@@ -159,11 +167,11 @@ export const DocumentsTable: React.FC<DocumentsTableProps> = ({
                     </>
                   )}
                 </div>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
-import { Button } from '../components/ui/Button';
-import { Input } from '../components/ui/Input';
-import { Card } from '../components/ui/Card';
+import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Card } from '../components/ui/card';
 import { useTranslation } from 'react-i18next';
 
 export const Login: React.FC = () => {
@@ -50,8 +50,10 @@ export const Login: React.FC = () => {
         <Card>
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t('auth.email')}
+              </label>
               <Input
-                label={t('auth.email')}
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -61,8 +63,10 @@ export const Login: React.FC = () => {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                {t('auth.password')}
+              </label>
               <Input
-                label={t('auth.password')}
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -80,8 +84,29 @@ export const Login: React.FC = () => {
             <Button
               type="submit"
               className="w-full"
-              loading={loading}
+              disabled={loading}
             >
+              {loading && (
+                <svg
+                  className="animate-spin -ml-1 mr-2 h-4 w-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  />
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+                  />
+                </svg>
+              )}
               {t('auth.signIn')}
             </Button>
           </form>

@@ -2,10 +2,9 @@ import React, { useState } from 'react';
 import { DocumentsTable } from '../components/documents/DocumentsTable';
 import { Filters } from '../components/common/Filters';
 import { Pagination } from '../components/common/Pagination';
-import { Card } from '../components/ui/Card';
-import { useApi, useApiMutation } from '../hooks/useApi';
+import { Card } from '../components/ui/card';
+import { useDocuments, useUpdateDocumentStatus } from '../hooks/useDocuments';
 import { Document } from '../types/partner';
-import { PaginatedResponse } from '../types/api';
 import { useTranslation } from 'react-i18next';
 
 export const Documents: React.FC = () => {
@@ -15,21 +14,19 @@ export const Documents: React.FC = () => {
   const [typeFilter, setTypeFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: documentsData, loading, refetch } = useApi<PaginatedResponse<Document>>(
-    '/api/documents',
-    {
-      filters: {
-        search,
-        status: statusFilter || undefined,
-        type: typeFilter || undefined,
-        page: currentPage,
-        limit: 10,
-      },
-      dependencies: [search, statusFilter, typeFilter, currentPage],
-    }
-  );
+  const { 
+    data: documentsData, 
+    isLoading, 
+    error 
+  } = useDocuments({
+    search,
+    status: statusFilter || undefined,
+    type: typeFilter || undefined,
+    page: currentPage,
+    limit: 10,
+  });
 
-  const { mutate: updateDocumentStatus } = useApiMutation<Document>();
+  const updateDocumentStatus = useUpdateDocumentStatus();
 
   const documents = documentsData?.data || [];
   const pagination = documentsData?.pagination;
@@ -62,34 +59,37 @@ export const Documents: React.FC = () => {
   };
 
   const handleApprove = async (document: Document) => {
-    const result = await updateDocumentStatus(`/api/documents/${document.id}/status`, {
-      method: 'PUT',
-      body: { status: 'approved' },
+    updateDocumentStatus.mutate({
+      id: document.id,
+      status: 'approved',
     });
-
-    if (result) {
-      refetch();
-    }
   };
 
   const handleReject = async (document: Document) => {
     const reason = prompt('Raison du rejet:');
     if (!reason) return;
 
-    const result = await updateDocumentStatus(`/api/documents/${document.id}/status`, {
-      method: 'PUT',
-      body: { status: 'rejected', rejectionReason: reason },
+    updateDocumentStatus.mutate({
+      id: document.id,
+      status: 'rejected',
+      rejectionReason: reason,
     });
-
-    if (result) {
-      refetch();
-    }
   };
 
-  if (loading && !documentsData) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-gray-500">{t('common.loading')}</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-red-500">
+          {error.message || 'Erreur lors du chargement des documents'}
+        </div>
       </div>
     );
   }
@@ -122,7 +122,7 @@ export const Documents: React.FC = () => {
         onReset={handleReset}
       />
 
-      <Card padding="none">
+      <Card>
         <DocumentsTable
           documents={documents}
           onReview={handleReview}

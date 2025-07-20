@@ -3,11 +3,10 @@ import { PlusIcon } from '@heroicons/react/24/outline';
 import { PartnersTable } from '../components/partners/PartnersTable';
 import { Filters } from '../components/common/Filters';
 import { Pagination } from '../components/common/Pagination';
-import { Button } from '../components/ui/Button';
-import { Card } from '../components/ui/Card';
-import { useApi } from '../hooks/useApi';
+import { Button } from '../components/ui/button';
+import { Card } from '../components/ui/card';
+import { usePartners, useUpdatePartnerStatus } from '../hooks/usePartners';
 import { Partner } from '../types/partner';
-import { PaginatedResponse } from '../types/api';
 import { useTranslation } from 'react-i18next';
 
 export const Partners: React.FC = () => {
@@ -17,19 +16,19 @@ export const Partners: React.FC = () => {
   const [tierFilter, setTierFilter] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { data: partnersData, loading, refetch } = useApi<PaginatedResponse<Partner>>(
-    '/api/partners',
-    {
-      filters: {
-        search,
-        status: statusFilter || undefined,
-        tier: tierFilter || undefined,
-        page: currentPage,
-        limit: 10,
-      },
-      dependencies: [search, statusFilter, tierFilter, currentPage],
-    }
-  );
+  const { 
+    data: partnersData, 
+    isLoading, 
+    error 
+  } = usePartners({
+    search,
+    status: statusFilter || undefined,
+    tier: tierFilter || undefined,
+    page: currentPage,
+    limit: 10,
+  });
+
+  const updatePartnerStatus = useUpdatePartnerStatus();
 
   const partners = partnersData?.data || [];
   const pagination = partnersData?.pagination;
@@ -65,13 +64,26 @@ export const Partners: React.FC = () => {
   };
 
   const handleSuspend = (partner: Partner) => {
-    console.log('Suspend partner:', partner);
+    updatePartnerStatus.mutate({
+      id: partner.id,
+      status: 'suspended',
+    });
   };
 
-  if (loading && !partnersData) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-gray-500">{t('common.loading')}</div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-red-500">
+          {error.message || 'Erreur lors du chargement des partenaires'}
+        </div>
       </div>
     );
   }
@@ -108,7 +120,7 @@ export const Partners: React.FC = () => {
         onReset={handleReset}
       />
 
-      <Card padding="none">
+      <Card>
         <PartnersTable
           partners={partners}
           onViewDetails={handleViewDetails}

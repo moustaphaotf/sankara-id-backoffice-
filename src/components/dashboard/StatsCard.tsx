@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card } from '../ui/Card';
-import { clsx } from 'clsx';
+import { Card, CardContent } from '../ui/card';
+import { cn } from '@/lib/utils';
 
 interface StatsCardProps {
   title: string;
@@ -21,15 +21,16 @@ export const StatsCard: React.FC<StatsCardProps> = ({
   className,
 }) => {
   return (
-    <Card className={clsx('transition-all duration-200 hover:shadow-md', className)}>
-      <div className="flex items-center">
+    <Card className={cn('transition-all duration-200 hover:shadow-md', className)}>
+      <CardContent className="p-6">
+        <div className="flex items-center">
         <div className="flex-1">
           <p className="text-sm font-medium text-gray-600">{title}</p>
           <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
           {change && (
             <div className="flex items-center mt-2">
               <span
-                className={clsx(
+                className={cn(
                   'text-sm font-medium',
                   change.type === 'increase'
                     ? 'text-green-600'
@@ -49,6 +50,7 @@ export const StatsCard: React.FC<StatsCardProps> = ({
           </div>
         )}
       </div>
+      </CardContent>
     </Card>
   );
 };

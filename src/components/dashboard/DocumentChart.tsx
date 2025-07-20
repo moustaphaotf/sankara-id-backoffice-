@@ -9,7 +9,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { Card, CardHeader, CardTitle } from '../ui/Card';
+import { Card, CardHeader, CardTitle, CardContent } from '../ui/card';
 import { useTranslation } from 'react-i18next';
 
 interface DocumentChartProps {
@@ -42,7 +42,8 @@ export const DocumentChart: React.FC<DocumentChartProps> = ({ data }) => {
       <CardHeader>
         <CardTitle>{t('dashboard.documentsChart')}</CardTitle>
       </CardHeader>
-      <div className="h-80">
+      <CardContent>
+        <div className="h-80">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={chartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
@@ -91,6 +92,7 @@ export const DocumentChart: React.FC<DocumentChartProps> = ({ data }) => {
           </LineChart>
         </ResponsiveContainer>
       </div>
+      </CardContent>
     </Card>
   );
 };

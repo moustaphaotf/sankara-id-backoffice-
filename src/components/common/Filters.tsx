@@ -1,8 +1,14 @@
 import React from 'react';
 import { MagnifyingGlassIcon, FunnelIcon } from '@heroicons/react/24/outline';
-import { Input } from '../ui/Input';
-import { Select } from '../ui/Select';
-import { Button } from '../ui/Button';
+import { Input } from '../ui/input';
+import { Button } from '../ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
 import { useTranslation } from 'react-i18next';
 
 interface FiltersProps {
@@ -42,9 +48,19 @@ export const Filters: React.FC<FiltersProps> = ({
           <div key={filter.key} className="min-w-48">
             <Select
               value={filter.value}
-              onChange={(e) => filter.onChange(e.target.value)}
-              options={filter.options}
-            />
+              onValueChange={filter.onChange}
+            >
+              <SelectTrigger>
+                <SelectValue placeholder={filter.options[0]?.label} />
+              </SelectTrigger>
+              <SelectContent>
+                {filter.options.map((option) => (
+                  <SelectItem key={option.value} value={option.value}>
+                    {option.label}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         ))}
 

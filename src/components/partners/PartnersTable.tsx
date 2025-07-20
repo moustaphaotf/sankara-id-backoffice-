@@ -3,8 +3,16 @@ import { format } from 'date-fns';
 import { fr, enUS } from 'date-fns/locale';
 import { EyeIcon, PencilIcon, StopIcon } from '@heroicons/react/24/outline';
 import { Partner } from '../../types/partner';
-import { Badge } from '../ui/Badge';
-import { Button } from '../ui/Button';
+import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '../ui/table';
 import { useTranslation } from 'react-i18next';
 
 interface PartnersTableProps {
@@ -75,40 +83,39 @@ export const PartnersTable: React.FC<PartnersTableProps> = ({
   };
 
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+    <div className="rounded-md border">
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead>
               {t('partners.name')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('partners.status')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('partners.tier')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('partners.documents')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('partners.quota')}
-            </th>
-            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead>
               {t('partners.lastActivity')}
-            </th>
-            <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+            </TableHead>
+            <TableHead className="text-right">
               {t('partners.actions')}
-            </th>
-          </tr>
-        </thead>
-        <tbody className="bg-white divide-y divide-gray-200">
+            </TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
           {partners.map((partner) => (
-            <tr
+            <TableRow
               key={partner.id}
-              className="hover:bg-gray-50 transition-colors duration-150"
             >
-              <td className="px-6 py-4 whitespace-nowrap">
+              <TableCell>
                 <div>
                   <div className="text-sm font-medium text-gray-900">
                     {partner.name}
@@ -117,25 +124,25 @@ export const PartnersTable: React.FC<PartnersTableProps> = ({
                     {partner.email}
                   </div>
                 </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              </TableCell>
+              <TableCell>
                 {getStatusBadge(partner.status)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              </TableCell>
+              <TableCell>
                 {getTierBadge(partner.tier)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              </TableCell>
+              <TableCell className="text-sm text-gray-900">
                 {partner.totalDocuments.toLocaleString()}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap">
+              </TableCell>
+              <TableCell>
                 <div className="w-32">
                   {formatQuota(partner.usedQuota, partner.monthlyQuota)}
                 </div>
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              </TableCell>
+              <TableCell className="text-sm text-gray-500">
                 {formatDate(partner.lastActivity)}
-              </td>
-              <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+              </TableCell>
+              <TableCell className="text-right">
                 <div className="flex items-center justify-end space-x-2">
                   <Button
                     variant="outline"
@@ -153,7 +160,7 @@ export const PartnersTable: React.FC<PartnersTableProps> = ({
                   </Button>
                   {partner.status !== 'suspended' && (
                     <Button
-                      variant="danger"
+                      variant="destructive"
                       size="sm"
                       onClick={() => onSuspend(partner)}
                     >
@@ -161,11 +168,11 @@ export const PartnersTable: React.FC<PartnersTableProps> = ({
                     </Button>
                   )}
                 </div>
-              </td>
-            </tr>
+              </TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
+        </TableBody>
+      </Table>
     </div>
   );
 };

@@ -1,6 +1,9 @@
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { AuthProvider, useAuth } from './hooks/useAuth';
+import { queryClient } from './lib/react-query';
 import { Layout } from './components/layout/Layout';
 import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
@@ -104,11 +107,14 @@ const AppRoutes: React.FC = () => {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router>
+          <AppRoutes />
+        </Router>
+      </AuthProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
